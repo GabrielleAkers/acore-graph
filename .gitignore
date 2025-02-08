@@ -1,3 +1,6 @@
 *.csv
 acore_world_backup
 azerothcore-wotlk
+node-dbc-reader
+node_modules
+data
