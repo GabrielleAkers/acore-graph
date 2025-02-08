@@ -5,6 +5,7 @@ Creates a neo4j graph db from the acore_world db in azerothcore
 why? because this data is well suited to a graph format and because I wanted to learn more about graph dbs
 
 ## Prequesites
+
 - node
 - mysql
 - docker
@@ -15,6 +16,7 @@ why? because this data is well suited to a graph format and because I wanted to 
 - mysql-connector-j
 
 ## Steps
+### setup and getting the data
 
 1. git clone https://github.com/azerothcore/azerothcore-wotlk.git
 2. cd azerothcore-wotlk
@@ -27,16 +29,12 @@ why? because this data is well suited to a graph format and because I wanted to 
 8. run cd .. && ./src/scripts/neo4j_import.sh  // make sure to set your paths correctly
 9. neo4j-etl is bugged (at time of writing) and generates everything we need but does it incorrectly so we have to patch it, it also bricks the database for some reason
 10. sudo neo4j stop && sudo rm -rf /var/neo4j/data/databases && sudo rm -rf /var/neo4j/data/transactions
-11. cd /tmp/acore_world/csv-001
-12. replace `(CREATE CONSTRAINT) ON (.*) ASSERT (.*)` with `$1 FOR $2 REQUIRE $3`
-13. replace USING PERIODIC COMMIT `USING PERIODIC COMMIT\n(.*\n.*\n.*);` with `CALL {\n$1\n} IN TRANSACTIONS ON ERROR CONTINUE`
-14. also replace `USING PERIODIC COMMIT\n([aA-zZ0-9-\(\)\{\},. \n>':\/]*)` with `CALL {\n$1\n} IN TRANSACTIONS ON ERROR CONTINUE`
-15. remove all locales imports `CALL .*\n.*locale.*\n[aA-zZ \n\(\)0-9:\{\}.,>=]* IN TRANSACTIONS ON ERROR CONTINUE` with ` `
-18. sudo neo4j start && cypher-shell -a bolt://localhost:7687 -u neo4j -p mynewpass -f ./load-csv.cypher
+11. npm i && node ./src/scripts/fix_load_csv.js /tmp/acore_world/csv-001/load-csv.cypher
+12. cd /tmp/acore_world/csv-001 && sudo neo4j start && cypher-shell -a bolt://localhost:7687 -u neo4j -p mynewpass -f ./load-csv.cypher
 
 at this point the nodes, labels and node properties should be generated and you can start graphing and databasing.
 
-time to generate relationships. this takes a while (especially the item relationships)
+### time to generate relationships
 
-19. cd wherever you cloned this project to and ./src/scripts/generate_relationships.sh
+13. cd back to this directory and run ./src/scripts/generate_relationships.sh
 

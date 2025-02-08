@@ -4,3 +4,4 @@ azerothcore-wotlk
 node-dbc-reader
 node_modules
 data
+.vscode

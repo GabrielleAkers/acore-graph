@@ -1,0 +1,14 @@
+{
+  "name": "acore-graph",
+  "version": "1.0.0",
+  "description": "Creates a neo4j graph db from the acore_world db in azerothcore",
+  "main": "fix_load_csv.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^13.1.0"
+  }
+}
