@@ -12,10 +12,10 @@ npm install
 
 # generates sql to import dbc files directly into acore_world
 # some files dont have schemas so continue on error
-# for dbc_file in data/dbc/*.dbc; do
-#     echo parsing "$dbc_file"
-#     npm run start -- --out-type=sql --file="$DBC_SQL_DIR/$(basename "$dbc_file" .dbc).sql" "$(basename "$dbc_file" .dbc)" || true
-# done
+for dbc_file in data/dbc/*.dbc; do
+    echo parsing "$dbc_file"
+    npm run start -- --out-type=sql --file="$DBC_SQL_DIR/$(basename "$dbc_file" .dbc).sql" "$(basename "$dbc_file" .dbc)" || true
+done
 
 cd $CUR_PATH/../../
 for sql_file in $DBC_SQL_DIR/*.sql; do

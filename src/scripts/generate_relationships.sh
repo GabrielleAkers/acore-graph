@@ -4,6 +4,6 @@
 
 CUR_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-for cypher_file in $CUR_PATH/../cypher/*.cypher; do
+for cypher_file in $CUR_PATH/../relationship-cypher/*.cypher; do
     cypher-shell -a bolt://localhost:7687 -u neo4j -p mynewpass --database=acore-graph -f "$cypher_file"
 done

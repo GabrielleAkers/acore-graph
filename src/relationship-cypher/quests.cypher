@@ -1,16 +1,16 @@
-// generate STARTS_QUEST
-MATCH (c:CreatureTemplate)
-MATCH (cs:CreatureQueststart)
-MATCH (q:QuestTemplate)
-WHERE c.entry = cs.id AND q.id = cs.quest
-MERGE (c)-[:STARTS_QUEST]->(q);
-
 // generate ENDS_AT
 MATCH (c:CreatureTemplate)
-MATCH (ce:CreatureQuestend)
+MATCH (ce:CreatureQuestender)
 MATCH (q:QuestTemplate)
 WHERE c.entry = ce.id AND q.id = ce.quest
 MERGE (q)-[:ENDS_AT]->(c);
+
+// generate ENDS_AT (for GO)
+MATCH (g:GameobjectTemplate)
+MATCH (ge:GameobjectQuestender)
+MATCH (q:QuestTemplate)
+WHERE g.entry = ge.id AND q.id = ge.quest
+MERGE (q)-[:ENDS_AT]->(g);
 
 // generate REQUIRES_NPC
 MATCH (q:QuestTemplate)

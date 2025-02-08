@@ -22,7 +22,7 @@ why? because this data is well suited to a graph format and because I wanted to 
 2. cd azerothcore-wotlk
 3. DOCKER_DB_EXTERNAL_PORT=3307 docker compose build --no-cache
 4. DOCKER_DB_EXTERNAL_PORT=3307 docker compose up -d ac-database  // no reason to run the entire game just need the data
-5. cd .. && git clone https://github.com/wowgaming/node-dbc-reader.git && ./src/scripts/dbc_import.sh  // builds all the sql queries to import dbc data into acore_world
+5. cd .. && git clone https://github.com/wowgaming/node-dbc-reader.git && ./src/scripts/dbc_import.sh  // builds all the sql queries to import dbc data into acore_world, this takes a while
 5. make sure JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64" is in /etc/environment and source it
 6. edit `initial.dbms.default_database=` in /etc/neo4j/neo4j.conf to `initial.dbms.default_database=acore-graph` and comment out `server.directories.import=/var/lib/neo4j/import`
 7. sudo neo4j-admin dbms set-initial-password mynewpass && sudo neo4j start
