@@ -44,10 +44,11 @@ const rename_pngs = (pngdir, md5translate_file, outdir) => {
                 if (!coord) return;
                 const png_file = png_files.find(v => v === base_tex_name + ".png");
                 if (png_file) {
-                    console.log("renaming", base_tex_name + ".png", "to", area + coord[1] + ".png");
+                    console.log("renaming", base_tex_name + ".png", "to", area + "/" + coord[1] + ".png");
+                    fs.mkdirSync(out_dir + area, {recursive: true});
                     fs.rename(
                         png_dir + png_file,
-                        out_dir + area + coord[1] + ".png",
+                        out_dir + area + "/" + coord[1] + ".png",
                         err => {} // some files dont exist? we just skip them
                     );
                 }
