@@ -1,10 +1,12 @@
-# acore-graph
+# acore-tilemap
+
+## Building the graph database
 
 Creates a neo4j graph db from the acore_world db in azerothcore
 
 why? because this data is well suited to a graph format and because I wanted to learn more about graph dbs
 
-## Prequesites
+### Prequesites
 
 - node
 - mysql
@@ -15,8 +17,7 @@ why? because this data is well suited to a graph format and because I wanted to 
 - neo4j-etl
 - mysql-connector-j
 
-## Steps
-### setup and getting the data
+#### setup and getting the data
 
 1. git clone https://github.com/azerothcore/azerothcore-wotlk.git
 2. cd azerothcore-wotlk
@@ -34,7 +35,19 @@ why? because this data is well suited to a graph format and because I wanted to 
 
 at this point the nodes, labels and node properties should be generated and you can start graphing and databasing.
 
-### time to generate relationships
+#### time to generate relationships
 
 13. cd back to this directory and run ./src/scripts/generate_relationships.sh
 
+## Extracting the minimap files and converting to png
+
+### Prerequisites 
+
+- node
+- a clean wow 3.3.5a client (chromiecraft works)
+- cmake
+- libbz2-dev
+
+#### extracting the blps from mpq and converting to png
+
+1. ./src/scripts/extract_convert_blp.sh <wow-Data-dir> <png-output-directory>

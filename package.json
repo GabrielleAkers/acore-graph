@@ -1,7 +1,7 @@
 {
-  "name": "acore-graph",
+  "name": "acore-tilemap",
   "version": "1.0.0",
-  "description": "Creates a neo4j graph db from the acore_world db in azerothcore",
+  "description": "tilemap wow with graph db backend",
   "main": "fix_load_csv.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

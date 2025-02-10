@@ -5,3 +5,11 @@ node-dbc-reader
 node_modules
 data
 .vscode
+MPQExtractor
+*.zip
+ChromieCraft*
+BLPConverter
+*.blp
+out/
+blp/
+tmp/
