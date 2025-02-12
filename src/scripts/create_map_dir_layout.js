@@ -125,7 +125,7 @@ command
         if (["azeroth", "outland", "all"].includes(v.toLowerCase())) {
             return v;
         } else {
-            command.error("'--name' must be 'azeroth', 'outland' or 'all'");
+            command.error("'--map' must be 'azeroth', 'outland' or 'all'");
         }
     })
     .action(create_map);

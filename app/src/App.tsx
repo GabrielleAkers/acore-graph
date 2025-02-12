@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
 
-import { Container } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { CRS } from "leaflet";
 import { useEffect, useState } from "react";
@@ -99,21 +99,41 @@ const AzerothMap = () => {
     );
 };
 
+type AvailMaps = "azeroth" | "outland";
+
+const MapNav = ({
+    map,
+    set_map,
+}: {
+    map: AvailMaps;
+    set_map: (k: AvailMaps) => any;
+}) => {
+    return (
+        <Nav
+            variant="pills"
+            defaultActiveKey="azeroth"
+            activeKey={map}
+            onSelect={(k) => set_map((k ?? "azeroth") as AvailMaps)}
+            fill
+        >
+            <Nav.Item>
+                <Nav.Link eventKey="azeroth">Azeroth</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link eventKey="outland">Outland</Nav.Link>
+            </Nav.Item>
+        </Nav>
+    );
+};
+
 export default function App() {
     const [current_map, set_current_map] = useState<"outland" | "azeroth">(
         "azeroth"
     );
 
-    useEffect(() => {
-        const query = new URL(window.location.toString()).searchParams;
-        const map_param = query.get("map");
-        if (map_param === "azeroth" || map_param === "outland") {
-            set_current_map(map_param);
-        }
-    });
-
     return (
         <Container data-bs-theme="dark" fluid style={{ padding: 0 }}>
+            <MapNav map={current_map} set_map={set_current_map} />
             {current_map === "outland" ? <OutlandMap /> : <AzerothMap />}
         </Container>
     );
