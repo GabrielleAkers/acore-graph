@@ -59,3 +59,7 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+.leaflet-container {
+  background: #001D28 !important;
+}

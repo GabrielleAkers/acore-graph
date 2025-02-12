@@ -2,10 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
 
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav } from "react-bootstrap";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { CRS } from "leaflet";
 import { useEffect, useState } from "react";
+import { MapRef } from "react-leaflet/MapContainer";
 
 const dev_mode = process.env.NODE_ENV !== "production";
 const tiles_origin = dev_mode
@@ -29,6 +30,14 @@ const SetViewAutomatically = ({
 };
 
 const OutlandMap = () => {
+    const [map_ref, set_map_ref] = useState<MapRef>(null);
+
+    useEffect(() => {
+        map_ref
+            ?.getContainer()
+            .style.setProperty("background", "black", "important");
+    });
+
     return (
         <MapContainer
             bounds={[
@@ -37,16 +46,17 @@ const OutlandMap = () => {
             ]}
             maxBounds={[
                 [-400, -700],
-                [400, 128],
+                [850, 900],
             ]}
             style={{
                 height: window.screen.height,
-                backgroundColor: "white",
+                backgroundColor: "#202020",
             }}
             crs={CRS.Simple}
             maxBoundsViscosity={1}
             zoom={3}
             center={[0, -32]}
+            ref={set_map_ref}
         >
             <TileLayer
                 url={`${tiles_origin}/map_data/Outland/{z}/{x}/{y}.png`}
@@ -77,11 +87,11 @@ const AzerothMap = () => {
             ]}
             style={{
                 height: window.screen.height,
-                backgroundColor: "white",
+                backgroundColor: "#202020",
             }}
             crs={CRS.Simple}
             maxBoundsViscosity={1}
-            zoom={0}
+            zoom={3}
         >
             <TileLayer
                 url={`${tiles_origin}/map_data/Azeroth/{z}/{x}/{y}.png`}
@@ -111,7 +121,6 @@ const MapNav = ({
     return (
         <Nav
             variant="pills"
-            defaultActiveKey="azeroth"
             activeKey={map}
             onSelect={(k) => set_map((k ?? "azeroth") as AvailMaps)}
             fill
@@ -128,12 +137,18 @@ const MapNav = ({
 
 export default function App() {
     const [current_map, set_current_map] = useState<"outland" | "azeroth">(
-        "azeroth"
+        (localStorage.getItem("lastmap") as AvailMaps) ?? "azeroth"
     );
+
+    const on_select_map_tab = (k: AvailMaps) => {
+        if (!["azeroth", "outland"].includes(k)) return;
+        localStorage.setItem("lastmap", k);
+        set_current_map(k);
+    };
 
     return (
         <Container data-bs-theme="dark" fluid style={{ padding: 0 }}>
-            <MapNav map={current_map} set_map={set_current_map} />
+            <MapNav map={current_map} set_map={on_select_map_tab} />
             {current_map === "outland" ? <OutlandMap /> : <AzerothMap />}
         </Container>
     );
