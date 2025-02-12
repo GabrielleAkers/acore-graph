@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 2 ]; then
-    echo "usage: extract_mpq.sh <wow-data-dir> <output-dir>"
+if [ $# -ne 2 ] && [ $# -ne 3 ]; then
+    echo "usage: extract_mpq.sh <wow-data-dir> <output-dir> [--no-instances]"
     exit 1
 fi
 
@@ -10,6 +10,7 @@ PROJECT_ROOT="$( cd "$CUR_PATH/../../" && pwd )"
 
 WOW_DATA_DIR=$1
 OUTPUT_DIR=$2
+NO_INSTANCES=$3
 
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$PROJECT_ROOT/tmp"
@@ -31,16 +32,12 @@ fi
 
 echo "extracting blps from mpqs"
 
-$MPQExtractor \
-    -e "Textures\Minimap\*" -f -c -p \
-    $WOW_DATA_DIR/patch.MPQ,base \
-    $WOW_DATA_DIR/patch-2.MPQ,base \
-    $WOW_DATA_DIR/patch-3.MPQ,base \
-    -o $PROJECT_ROOT/tmp $WOW_DATA_DIR/common.MPQ
-
 # extracts the .trs file to build the texture->maptile mapping
 $MPQExtractor \
     -e "Textures\Minimap\*" -f -c -p \
+    $WOW_DATA_DIR/common.MPQ,base \
+    $WOW_DATA_DIR/expansion.MPQ,base \
+    $WOW_DATA_DIR/lichking.MPQ \
     $WOW_DATA_DIR/patch.MPQ,base \
     $WOW_DATA_DIR/patch-2.MPQ,base \
     $WOW_DATA_DIR/patch-3.MPQ,base \
@@ -59,6 +56,10 @@ for blp in $PROJECT_ROOT/tmp/textures/minimap/*.blp; do
     fi
 done
 
-node "$CUR_PATH/rename_png_with_md5translate.js" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR"
+if [ "$NO_INSTANCES" = "--no-instances" ]; then
+    node "$CUR_PATH/rename_png_with_md5translate.js" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR" --no-instances
+else
+    node "$CUR_PATH/rename_png_with_md5translate.js" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR"
+fi
 
-rm -rf $PROJECT_ROOT/tmp
+# rm -rf $PROJECT_ROOT/tmp

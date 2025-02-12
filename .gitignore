@@ -13,3 +13,6 @@ BLPConverter
 out/
 blp/
 tmp/
+dist/
+*.png
+map_data
