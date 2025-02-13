@@ -33,6 +33,7 @@ jobs:
           mkdir ./_site
           npm run build
           mv ./dist/* ./_site
+          mv ./_site ..
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
   deploy:
