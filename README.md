@@ -50,6 +50,5 @@ at this point the nodes, labels and node properties should be generated and you 
 
 #### extracting the blps from mpq and converting to png then restructure everything to fit the tilemap format
 
-1. ./src/scripts/extract_convert_blp.sh <wow-Data-dir> <png-output-dir> --no-instances
-2. ./src/scripts/create_map_dir_layout.sh <png-output-dir> <map-output-dir>
-3. the output images needs to be hosted somewhere. you can put it in app/assets for local testing, but i will put it in s3 with cloudfront serving it, modify the sources in app/src/App.tsx to match your setup
+1. npm i && ./src/scripts/extract_convert_blp.sh <wow-Data-dir> <png-output-dir> --no-instances
+2. the output images needs to be hosted somewhere. you can put it in app/assets for local testing, but i will put it in s3 with cloudfront serving it, modify the sources in app/src/App.tsx to match your setup

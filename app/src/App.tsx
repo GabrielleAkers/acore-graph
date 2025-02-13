@@ -45,8 +45,8 @@ const OutlandMap = () => {
                 [8192, 8192],
             ]}
             maxBounds={[
-                [-400, -700],
-                [850, 900],
+                [-800, -1000],
+                [850, 1000],
             ]}
             style={{
                 height: window.screen.height,
@@ -54,7 +54,6 @@ const OutlandMap = () => {
             }}
             crs={CRS.Simple}
             maxBoundsViscosity={1}
-            zoom={3}
             center={[0, -32]}
             ref={set_map_ref}
         >
@@ -69,7 +68,7 @@ const OutlandMap = () => {
                 minZoom={0}
                 maxZoom={3}
             />
-            <SetViewAutomatically lat={0} lng={-414} />
+            <SetViewAutomatically lat={0} lng={-414} zoom={0} />
         </MapContainer>
     );
 };
@@ -91,7 +90,6 @@ const AzerothMap = () => {
             }}
             crs={CRS.Simple}
             maxBoundsViscosity={1}
-            zoom={3}
         >
             <TileLayer
                 url={`${tiles_origin}/map_data/Azeroth/{z}/{x}/{y}.png`}
@@ -104,7 +102,7 @@ const AzerothMap = () => {
                 minZoom={0}
                 maxZoom={3}
             />
-            <SetViewAutomatically lat={0} lng={0} zoom={3} />
+            <SetViewAutomatically lat={0} lng={0} zoom={0} />
         </MapContainer>
     );
 };

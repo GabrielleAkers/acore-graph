@@ -16,3 +16,5 @@ tmp/
 dist/
 *.png
 map_data
+maptiles
+gm

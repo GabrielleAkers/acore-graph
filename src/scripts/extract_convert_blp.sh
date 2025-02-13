@@ -56,10 +56,20 @@ for blp in $PROJECT_ROOT/tmp/textures/minimap/*.blp; do
     fi
 done
 
+echo "downloading imagemagick"
+
+if [ ! -f "./gm" ]; then
+    cd $PROJECT_ROOT
+    wget "https://imagemagick.org/archive/binaries/magick" -O gm
+    chmod a+x ./gm
+fi
+
+echo "creating tilemaps"
+
 if [ "$NO_INSTANCES" = "--no-instances" ]; then
-    node "$CUR_PATH/rename_png_with_md5translate.js" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR" --no-instances
+    node "$CUR_PATH/create_tilemap_layers.js" "$PROJECT_ROOT" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR" --no-instances
 else
-    node "$CUR_PATH/rename_png_with_md5translate.js" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR"
+    node "$CUR_PATH/create_tilemap_layers.js" "$PROJECT_ROOT" "$PROJECT_ROOT/tmp" "$PROJECT_ROOT/tmp/textures/minimap/md5translate.trs" "$OUTPUT_DIR"
 fi
 
 # rm -rf $PROJECT_ROOT/tmp
