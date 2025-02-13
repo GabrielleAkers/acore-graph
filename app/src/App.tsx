@@ -1,140 +1,30 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
 
-import { Container, Nav } from "react-bootstrap";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { CRS } from "leaflet";
-import { useEffect, useState } from "react";
-import { MapRef } from "react-leaflet/MapContainer";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
-const dev_mode = process.env.NODE_ENV !== "production";
-const tiles_origin = dev_mode
-    ? window.location.origin
-    : "https://maptiles.hawk-tuah.gay";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useState } from "react";
+import { AzerothMap, OutlandMap } from "./components/Map";
+import AppContainer from "./components/AppContainer";
 
-const SetViewAutomatically = ({
-    lat,
-    lng,
-    zoom,
-}: {
-    lat: number;
-    lng: number;
-    zoom?: number;
-}) => {
-    const map = useMap();
-    useEffect(() => {
-        map.setView([lat, lng], zoom);
-    }, [lat, lng]);
-    return null;
-};
+const dark_theme = createTheme({
+    palette: {
+        mode: "dark",
+    },
+});
 
-const OutlandMap = () => {
-    const [map_ref, set_map_ref] = useState<MapRef>(null);
+const Maps = ["azeroth", "outland"] as const;
+type AvailMaps = (typeof Maps)[number];
 
-    useEffect(() => {
-        map_ref
-            ?.getContainer()
-            .style.setProperty("background", "black", "important");
-    });
-
-    return (
-        <MapContainer
-            bounds={[
-                [-8192, -8192],
-                [8192, 8192],
-            ]}
-            maxBounds={[
-                [-800, -1000],
-                [850, 1000],
-            ]}
-            style={{
-                height: window.screen.height,
-                backgroundColor: "#202020",
-            }}
-            crs={CRS.Simple}
-            maxBoundsViscosity={1}
-            center={[0, -32]}
-            ref={set_map_ref}
-        >
-            <TileLayer
-                url={`${tiles_origin}/map_data/Outland/{z}/{x}/{y}.png`}
-                tileSize={256}
-                bounds={[
-                    [-8192, -8192],
-                    [8192, 8192],
-                ]}
-                zoomReverse
-                minZoom={0}
-                maxZoom={3}
-            />
-            <SetViewAutomatically lat={0} lng={-414} zoom={0} />
-        </MapContainer>
-    );
-};
-
-const AzerothMap = () => {
-    return (
-        <MapContainer
-            bounds={[
-                [-8192, -8192],
-                [8192, 8192],
-            ]}
-            maxBounds={[
-                [-2048, -2048],
-                [512, 2048],
-            ]}
-            style={{
-                height: window.screen.height,
-                backgroundColor: "#202020",
-            }}
-            crs={CRS.Simple}
-            maxBoundsViscosity={1}
-        >
-            <TileLayer
-                url={`${tiles_origin}/map_data/Azeroth/{z}/{x}/{y}.png`}
-                tileSize={256}
-                bounds={[
-                    [-8192, -8192],
-                    [8192, 8192],
-                ]}
-                zoomReverse
-                minZoom={0}
-                maxZoom={3}
-            />
-            <SetViewAutomatically lat={0} lng={0} zoom={0} />
-        </MapContainer>
-    );
-};
-
-type AvailMaps = "azeroth" | "outland";
-
-const MapNav = ({
-    map,
-    set_map,
-}: {
-    map: AvailMaps;
-    set_map: (k: AvailMaps) => any;
-}) => {
-    return (
-        <Nav
-            variant="pills"
-            activeKey={map}
-            onSelect={(k) => set_map((k ?? "azeroth") as AvailMaps)}
-            fill
-        >
-            <Nav.Item>
-                <Nav.Link eventKey="azeroth">Azeroth</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="outland">Outland</Nav.Link>
-            </Nav.Item>
-        </Nav>
-    );
-};
+const AppContent = AppContainer<AvailMaps>;
 
 export default function App() {
-    const [current_map, set_current_map] = useState<"outland" | "azeroth">(
+    const [current_map, set_current_map] = useState<AvailMaps>(
         (localStorage.getItem("lastmap") as AvailMaps) ?? "azeroth"
     );
 
@@ -145,9 +35,22 @@ export default function App() {
     };
 
     return (
-        <Container data-bs-theme="dark" fluid style={{ padding: 0 }}>
-            <MapNav map={current_map} set_map={on_select_map_tab} />
-            {current_map === "outland" ? <OutlandMap /> : <AzerothMap />}
-        </Container>
+        <ThemeProvider theme={dark_theme}>
+            <CssBaseline />
+            <AppContent
+                tab_vals={Maps}
+                current_tab={current_map}
+                on_select_tab={on_select_map_tab}
+                main_content={
+                    <>
+                        {current_map === "outland" ? (
+                            <OutlandMap />
+                        ) : (
+                            <AzerothMap />
+                        )}
+                    </>
+                }
+            />
+        </ThemeProvider>
     );
 }
