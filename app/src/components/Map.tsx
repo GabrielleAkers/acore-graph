@@ -41,7 +41,7 @@ const OutlandMap = () => {
             ]}
             maxBounds={[
                 [-800, -1000],
-                [850, 1000],
+                [850, 1400],
             ]}
             style={{
                 height: window.screen.height,
